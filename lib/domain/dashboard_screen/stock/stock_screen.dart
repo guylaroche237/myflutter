@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutter/domain/dashboard_screen/stock/trier_stock_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/domain/widget/layout/filterbox.dart';
 import 'package:myflutter/domain/widget/layout/produit_card.dart';
@@ -58,6 +59,7 @@ class _StockScreenState extends State<StockScreen>{
                 child: FilterBox(
                   label: "Trier Stock",
                   onTap: () {
+                    Navigator.pushNamed(context,TrierStockScreen.ROUTE);
 
                   },
                 ),

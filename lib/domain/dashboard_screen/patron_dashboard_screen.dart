@@ -5,6 +5,7 @@ import 'package:myflutter/domain/dashboard_screen/profile/profiles_routes.dart';
 import 'package:myflutter/domain/dashboard_screen/stock/stock_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/stock/stocks_routes.dart';
 import 'package:myflutter/domain/dashboard_screen/vente/vente_routes.dart';
+import 'package:myflutter/domain/screen/login_screen/login_screen.dart';
 import 'package:myflutter/model/livraison.dart';
 import 'bottom_navigation.dart';
 import 'home/home_screen.dart';
@@ -75,7 +76,7 @@ class _PatronDashboardScreenState extends State<PatronDashboardScreen> {
               ? _buildMap[tabItem]
               : Navigator(
               key: _navigatorKeys[tabItem],
-              initialRoute: "/",
+              initialRoute: LoginScreen.ROUTE,
               onGenerateRoute: (_) => MaterialPageRoute(
                   builder: (context) => _buildMap[tabItem])));
     }

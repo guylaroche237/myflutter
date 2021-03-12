@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutter/domain/dashboard_screen/profile/edite_profile_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
+import 'package:myflutter/domain/widget/button/black_outline_button.dart';
 import 'package:myflutter/domain/widget/layout/shop_date_creation.dart';
 import 'package:myflutter/domain/widget/layout/shop_localisation.dart';
 import 'package:myflutter/domain/widget/layout/shop_name.dart';
@@ -11,7 +13,6 @@ import 'package:myflutter/model/user.dart';
 
 class ProfileScreen extends StatefulWidget{
   static const ROUTE = "profil_routes/";
-
   const ProfileScreen({Key key,}) : super(key: key);
 
   _StockScreenState createState() => _StockScreenState();
@@ -108,8 +109,19 @@ class _StockScreenState extends State<ProfileScreen>{
 
                         Padding(padding: EdgeInsets.symmetric(vertical: 8),
                           child: ShopDateDetail(boutique: boutique,) ,
+                        ),
+                        SizedBox(height: 5,),
+                        Divider(height: 2,),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: BlackButtonOutline(
+                            text: "Edite Profile",
+                            onPressed: (){
+                              Navigator.pushNamed(context,EditeProfileScreen.ROUTE,arguments: user);
+                            },
+                          ),
                         )
-                        ,
+
                       ],
                     ),
                         isExpanded: active_parametrage),

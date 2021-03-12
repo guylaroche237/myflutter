@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutter/domain/dashboard_screen/livraison/livraison_detail.dart';
+import 'package:myflutter/domain/dashboard_screen/livraison/trier_livraison_screen.dart';
+import 'package:myflutter/domain/dashboard_screen/vente/trier_vente_screen.dart';
 import 'package:myflutter/model/livraison.dart';
 
 import '../bottom_navigation.dart';
@@ -32,6 +34,12 @@ class LivraisonRoute extends StatelessWidget{
               builder: (context)=> DetailsLivraisonScreen(
                 args: settings.arguments,
               ),
+              settings: settings
+            );
+            break;
+          case TrierVenteScreen.ROUTE:
+            return MaterialPageRoute(
+              builder: (_) => TrierLivraisonScreen(),
               settings: settings
             );
             break;

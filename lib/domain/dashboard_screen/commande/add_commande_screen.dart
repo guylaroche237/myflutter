@@ -43,6 +43,7 @@ class _AddCommandeScreenState extends State<AddCommandeScreen>{
 
 
 
+
   var fabriquant = ["Guinness","Brasserie","kADJI","Tous"];
 
   GlobalKey key = new GlobalKey<AutoCompleteTextFieldState<String>>();
@@ -282,8 +283,6 @@ class _AddCommandeScreenState extends State<AddCommandeScreen>{
                         setState(() {
                        //
                           list.removeAt(pos);
-
-
 
                         });
                         },),

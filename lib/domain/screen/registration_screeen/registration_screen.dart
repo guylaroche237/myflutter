@@ -118,7 +118,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                     }
                                                     return null;
                                                   },
-                                                  hintText: "Your email",
+                                                  hintText: "Nom Du Bar",
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _email = value.trim();
+                                                    });
+                                                  },
+                                                ),
+                                                LightTextField(
+                                                  keyboardType: TextInputType.phone,
+                                                  validator: (value) {
+                                                    if (!(Validator.isEmail(value) &&
+                                                        Validator.isNotEmpty(value))) {
+                                                      return "The value entered is not valid";
+                                                    }
+                                                    return null;
+                                                  },
+                                                  hintText: "Numero Telephone",
                                                   onChanged: (value) {
                                                     setState(() {
                                                       _email = value.trim();

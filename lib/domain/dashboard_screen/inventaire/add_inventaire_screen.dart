@@ -25,7 +25,8 @@ class _AddCommandeScreenState extends State<AddInventaireScreen>{
   var mylist = new List(5);
   String selectProduits ;
   String selectFabriquant;
-  int qte;
+  int qteb;
+  int qtec;
   List<Vente> list = [];
 
 
@@ -117,31 +118,57 @@ class _AddCommandeScreenState extends State<AddInventaireScreen>{
                       SizedBox(
                         height: 8,
                       ),
-                      BlackOutlineTextField(
-                          onChanged: (v) {
-                            setState(() {
-                              qte = int.parse(v.toString());
-                            });
-                          },
-                          hintText:"Quantite Produits",
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (!Validator.isNotEmpty(value)) {
-                              return "Please enter a valid produit quantite";
-                            }
-                            return null;
-                          }),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.45,
+                            child: BlackOutlineTextField(
+                                onChanged: (v) {
+                                  setState(() {
+                                    qteb = int.parse(v.toString());
+                                  });
+                                },
+                                hintText:"Quantite Bouteille",
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (!Validator.isNotEmpty(value)) {
+                                    return "Please enter a valid produit quantite";
+                                  }
+                                  return null;
+                                }),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.4,
+                            child: BlackOutlineTextField(
+                                onChanged: (v) {
+                                  setState(() {
+                                    qtec = int.parse(v.toString());
+                                  });
+                                },
+                                hintText:"Quantite Casier",
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (!Validator.isNotEmpty(value)) {
+                                    return "Please enter a valid produit quantite";
+                                  }
+                                  return null;
+                                }),
+                          ),
+                        ],
+                      ),
                       SizedBox(
                         height: 8,
                       ),
-                      (selectProduits != null && qte != null)?PrimaryButton(
+                      (selectProduits != null && qteb != null)?PrimaryButton(
                         text: "Insert Produit",
                         onPressed: (){
-                          Vente cmd = Vente(title: selectProduits,qte: qte);
+                          Vente cmd = Vente(title: selectProduits,qteb: qteb,qtec: qtec);
                           setState(() {
                             list.add(cmd);
                             selectProduits = null;
-                            qte = null;
+                            qteb = null;
+                            qtec = null;
                           });
                         },
                       ):SizedBox(),
@@ -153,7 +180,7 @@ class _AddCommandeScreenState extends State<AddInventaireScreen>{
                             itemCount: list.length,
                             itemBuilder: (context,index){
                               // return ListTile(title: Text(list[index].title),subtitle: Text(list[index].qte.toString()),);
-                              CommandeArgs cmd = CommandeArgs(nomProduit: list[index].title,qte:list[index].qte,prixUnitaire: 100 );
+                              CommandeArgs cmd = CommandeArgs(nomProduit: list[index].title,qte:list[index].qteb,qtec:list[index].qtec,prixUnitaire: 100 );
                               // ListTile(title: Text(list[index].title),subtitle: Text(list[index].qte.toString()),);
                               return CommandeCard(args: cmd,onPressed: (){
                                 removeCommande(cmd);

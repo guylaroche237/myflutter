@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutter/domain/dashboard_screen/vente/trier_vente_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/vente/vente_args.dart';
 import 'package:myflutter/domain/dashboard_screen/vente/vente_detail_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
@@ -14,7 +15,7 @@ import 'package:provider/provider.dart';
 
 class VenteScreen extends StatefulWidget {
   VenteScreen({Key key}) : super(key: key);
-  static const ROUTE = "ventes/filter";
+  static const ROUTE = "ventes";
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -67,6 +68,7 @@ class _SearchScreenState extends State<VenteScreen> {
                   child: FilterBox(
                     label: "Trier Vente",
                     onTap: () {
+                      Navigator.pushNamed(context, TrierVenteScreen.ROUTE);
 
                     },
                   ),

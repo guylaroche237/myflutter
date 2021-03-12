@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutter/domain/dashboard_screen/stock/detail_stock_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/stock/stock_screen.dart';
+import 'package:myflutter/domain/dashboard_screen/stock/trier_stock_screen.dart';
 
 import '../bottom_navigation.dart';
 
@@ -27,6 +28,11 @@ class StockRoute extends StatelessWidget{
                 settings: settings
             );
             break;
+          case TrierStockScreen.ROUTE:
+            return MaterialPageRoute(
+              builder: (_) => TrierStockScreen(),
+              settings: settings
+            );
 
           default:
             throw Exception("Invalid route");

@@ -8,8 +8,9 @@ class Vente{
   String dateVente;
   int prixTotal;
   int quantite;
-  int quantiteProduit;
+  double quantiteProduit;
   String fournisseur;
+  String nomProduit;
 
   Vente({
     this.createur,
@@ -19,7 +20,7 @@ class Vente{
     this.prixTotal,
     this.quantite,
     this.dateVente,
-    this.fournisseur,this.quantiteProduit
+    this.fournisseur,this.quantiteProduit,this.nomProduit
   });
 
   Vente.fromJson(Map<String,dynamic> json){

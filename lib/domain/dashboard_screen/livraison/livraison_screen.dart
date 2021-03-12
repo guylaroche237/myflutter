@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutter/domain/dashboard_screen/livraison/livraison_args.dart';
 import 'package:myflutter/domain/dashboard_screen/livraison/livraison_detail.dart';
+import 'package:myflutter/domain/dashboard_screen/livraison/trier_livraison_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/domain/widget/layout/filterbox.dart';
 import 'package:myflutter/domain/widget/layout/livraison_card.dart';
@@ -54,7 +55,7 @@ class _CommandeScreenState extends State<LivraisonScreen>{
                   child: FilterBox(
                     label: "Trier Livraison",
                     onTap: () {
-
+                      Navigator.pushNamed(context, TrierLivraisonScreen.ROUTE);
                     },
                   ),
                 ),

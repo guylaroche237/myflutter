@@ -3,6 +3,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutter/domain/dashboard_screen/commande/command_args.dart';
+import 'package:myflutter/domain/dashboard_screen/vente/vente_args.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/domain/helpers/validator.dart';
 import 'package:myflutter/domain/widget/button/primary_button.dart';
@@ -10,7 +11,9 @@ import 'package:myflutter/domain/widget/button/secondary_button.dart';
 import 'package:myflutter/domain/widget/form/dropdown_buttons/black_outline_dropdown_button.dart';
 import 'package:myflutter/domain/widget/form/text_fields/black_outline_text_field.dart';
 import 'package:myflutter/domain/widget/layout/commande_card.dart';
+import 'package:myflutter/domain/widget/layout/vente_card.dart';
 import 'package:myflutter/model/produit.dart';
+import 'package:myflutter/model/vente.dart';
 
 class AddVenteScreen extends StatefulWidget{
   static const ROUTE = "add_ven";
@@ -23,7 +26,7 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
   var mylist = new List(5);
   String selectProduits ;
   String selectFabriquant;
-  int qte;
+  double qte;
   List<Vente> list = [];
 
 
@@ -133,7 +136,7 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
                       BlackOutlineTextField(
                           onChanged: (v) {
                             setState(() {
-                              qte = int.parse(v.toString());
+                              qte = double.parse(v.toString());
                             });
                           },
                           hintText:"Quantite Produits",
@@ -150,7 +153,8 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
                       (selectProduits != null && qte != null)?PrimaryButton(
                         text: "Insert Produit",
                         onPressed: (){
-                          Vente cmd = Vente(title: selectProduits,qte: qte);
+                        //  Vente cmd = Vente(title: selectProduits,qte: qte);
+                          Vente cmd = Vente(nomProduit: selectProduits,quantiteProduit: qte);
                           setState(() {
                             list.add(cmd);
                             selectProduits = null;
@@ -166,9 +170,10 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
                             itemCount: list.length,
                             itemBuilder: (context,index){
                              // return ListTile(title: Text(list[index].title),subtitle: Text(list[index].qte.toString()),);
-                              CommandeArgs cmd = CommandeArgs(nomProduit: list[index].title,qte:list[index].qte,prixUnitaire: 100 );
+                            //  CommandeArgs cmd = CommandeArgs(nomProduit: list[index].title,qte:list[index].qte,prixUnitaire: 100 );
+                              VenteArgs cmd = VenteArgs(vente: list[index]);
                               // ListTile(title: Text(list[index].title),subtitle: Text(list[index].qte.toString()),);
-                              return CommandeCard(args: cmd,onPressed: (){
+                              return VenteCard(args: cmd,onPressed: (){
                                 removeCommande(cmd);
                               },);
                             } ),
@@ -188,7 +193,7 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
     );
   }
 
-  void removeCommande(CommandeArgs args){
+  void removeCommande(VenteArgs args){
     showDialog(context: context,builder:(BuildContext context){
       return AlertDialog(
         title: Center(
@@ -222,7 +227,7 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
                         int pos = 0;
                         int i = 0;
                         list.forEach((element) {
-                          if(element.title == args.nomProduit){
+                          if(element.nomProduit == args.vente.nomProduit){
                             print("element trouver");
                             pos = i;
                           }
@@ -257,9 +262,4 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
     });
   }
 
-}
-class Vente{
-  String title;
-  int qte;
-  Vente({this.title,this.qte});
 }

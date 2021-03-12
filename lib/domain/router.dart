@@ -4,8 +4,6 @@ import 'package:myflutter/domain/dashboard_screen/inventaire/add_inventaire_scre
 import 'package:myflutter/domain/dashboard_screen/inventaire/detail_inventaire_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/ristourne/all_ristournes_screens.dart';
 import 'package:myflutter/domain/screen/splash_screen.dart';
-
-
 import 'continue_as_screen.dart';
 import 'dashboard_screen/benefices/benefice_screen.dart';
 import 'dashboard_screen/commande/add_commande_screen.dart';

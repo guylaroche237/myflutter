@@ -26,7 +26,7 @@ class RistourneItem extends StatelessWidget{
         children: [
           ListTile(
             title: Text(this.ristourne.fournisseur,style: TextStyle(fontWeight: FontWeight.bold,color: ristourne.color),),
-            subtitle: Text(this.ristourne.benefice.toString()+" Frs",style: TextStyle(color: ristourne.color),),
+            trailing: Text(this.ristourne.benefice.toString()+" Frs",style: TextStyle(color: ristourne.color,fontWeight: FontWeight.bold,fontSize: 20),),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,11 +37,10 @@ class RistourneItem extends StatelessWidget{
                 padding: EdgeInsets.all(2),
                 margin: EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue,
-                  // image: DecorationImage(image: AssetImage(ristourne.image),fit: BoxFit.cover)
+                 // shape: BoxShape.circle,
+                   image: DecorationImage(image: AssetImage(ristourne.image),fit: BoxFit.cover)
                 ),
-                child: ClipOval(child: Image.asset(ristourne.image,width: 70,height: 70,fit: BoxFit.cover,)),
+                //child: ClipOval(child: Image.asset(ristourne.image,width: 70,height: 70,fit: BoxFit.cover,)),
               ),
               Text(this.ristourne.date,style: TextStyle(color: ristourne.color),),
             ],

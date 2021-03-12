@@ -136,7 +136,7 @@ class _PerteScreenState extends State<PerteScreen>{
                       (selectProduits != null && qte != null)?PrimaryButton(
                         text: "Insert Produit",
                         onPressed: (){
-                          Vente cmd = Vente(title: selectProduits,qte: qte);
+                          Vente cmd = Vente(title: selectProduits,qteb: qte);
                           setState(() {
                             list.add(cmd);
                             selectProduits = null;
@@ -152,7 +152,7 @@ class _PerteScreenState extends State<PerteScreen>{
                             itemCount: list.length,
                             itemBuilder: (context,index){
                               // return ListTile(title: Text(list[index].title),subtitle: Text(list[index].qte.toString()),);
-                              CommandeArgs cmd = CommandeArgs(nomProduit: list[index].title,qte:list[index].qte,prixUnitaire: 100 );
+                              CommandeArgs cmd = CommandeArgs(nomProduit: list[index].title,qte:list[index].qteb,prixUnitaire: 100 );
                               // ListTile(title: Text(list[index].title),subtitle: Text(list[index].qte.toString()),);
                               return CommandeCard(args: cmd,onPressed: (){
                                 removeCommande(cmd);
@@ -250,6 +250,7 @@ class _PerteScreenState extends State<PerteScreen>{
 }
 class Vente{
   String title;
-  int qte;
-  Vente({this.title,this.qte});
+  int qteb;
+  int qtec;
+  Vente({this.title,this.qteb,this.qtec});
 }

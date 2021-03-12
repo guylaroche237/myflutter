@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutter/domain/dashboard_screen/profile/edite_profile_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/profile/new_plainte_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/profile/profile_screen.dart';
 
@@ -33,6 +34,14 @@ class ProfileRoute extends StatelessWidget{
               settings: settings
             );
             break;
+
+          case EditeProfileScreen.ROUTE:
+            return MaterialPageRoute(
+              builder: (_) => EditeProfileScreen(
+                user: settings.arguments,
+              ),
+              settings: settings
+            );
 
           default:
             throw Exception("Invalid route");

@@ -5,6 +5,7 @@ import 'package:myflutter/domain/dashboard_screen/patron_dashboard_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/worker_dashboard_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/domain/helpers/validator.dart';
+import 'package:myflutter/domain/screen/registration_screeen/registration_screen.dart';
 import 'package:myflutter/domain/widget/button/secondary_button.dart';
 import 'package:myflutter/domain/widget/form/text_fields/light_password_text_field.dart';
 import 'package:myflutter/domain/widget/form/text_fields/light_text_field.dart';
@@ -63,8 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.max,
                                     children: <Widget>[
+                                    //  Center(child: CircularProgressIndicator(),),
                                       Flexible(
-                                        flex: 2,
+                                        flex: 3,
                                         child: Padding(
                                           padding: const EdgeInsets.only(top: 40),
                                           child: Align(
@@ -121,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   keyboardType:
                                                   TextInputType.emailAddress,
                                                   //initialValue: authProvider.getEmail(),
-                                                  hintText: "Your email",
+                                                  hintText: "Nom Du Bar",
                                                   onChanged: (value) {
                                                     String v = value;
                                                     setState(() {
@@ -148,6 +150,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     if (!(Validator.isNotEmpty(value) &&
                                                         value.length >= 4)) {
                                                       return "The entered value is not valid (min length: 4)";
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                                LightTextField(
+                                                  keyboardType:
+                                                  TextInputType.phone,
+                                                  //initialValue: authProvider.getEmail(),
+                                                  hintText: "Numero  Telephone",
+                                                  onChanged: (value) {
+                                                    String v = value;
+                                                    setState(() {
+                                                      _email = v.trim();
+                                                    });
+                                                  },
+                                                  validator: (value) {
+                                                    if (!(Validator.isEmail(value) &&
+                                                        Validator.isNotEmpty(value))) {
+                                                      return "The value entered is not valid";
                                                     }
                                                     return null;
                                                   },
@@ -186,6 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                           style: ThemeHelper.paragraph(
                                                               isBold: true)),
                                                     )),
+
                                                 SecondaryButton(
                                                     onPressed: () {
                                                       //_email = authProvider.getEmail();
@@ -202,6 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                               RegistrationScreen.ROUTE,
                                                               arguments: role);
                                                         });**/
+                                                    Navigator.pushNamed(context, RegistrationScreen.ROUTE);
                                                   },
                                                   child: Text("Sign up instead",
                                                       style: ThemeHelper.paragraph(
@@ -227,24 +250,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onLoginSucess() {
-    if(widget.args.role == 0){
-      print('------------------ role employer -------------'+widget.args.role.toString());
-     handleEmployerLoginSuccess();
-    }else{
-      print('------------------ role worker -------------'+widget.args.role.toString());
-      handleWorkerLoginSuccess();
-    }
+    //if(widget.args.role == 0){handleEmployerLoginSuccess();}else{handleWorkerLoginSuccess();}
+    handleEmployerLoginSuccess();
 
   }
 
   void handleWorkerLoginSuccess() {
-    MainNavigatorKey.key.currentState
-        .pushReplacementNamed(WorkerDashboardScreen.ROUTE);
+    MainNavigatorKey.key.currentState.pushReplacementNamed(WorkerDashboardScreen.ROUTE);
     return;
   }
 
   void handleEmployerLoginSuccess() {
-    MainNavigatorKey.key.currentState.pushReplacementNamed(PatronDashboardScreen.ROUTE);
+  //  MainNavigatorKey.key.currentState.pushReplacementNamed(PatronDashboardScreen.ROUTE);
+    Navigator.pushReplacementNamed(context,PatronDashboardScreen.ROUTE);
     return;
   }
 

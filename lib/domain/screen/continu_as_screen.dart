@@ -38,9 +38,7 @@ class ContinueAsScreen extends StatelessWidget {
                         width: double.infinity,
                         child: SecondaryButton(
                             onPressed: () {
-                              print(")))))))))))))))");
-                              Navigator.of(context).pushReplacementNamed(RegistrationScreen.ROUTE);
-
+                           //   Navigator.of(context).pushReplacementNamed(RegistrationScreen.ROUTE);
                             },
                             text: "Registration"),
                       ),
@@ -50,8 +48,8 @@ class ContinueAsScreen extends StatelessWidget {
                         child: PrimaryButton(
                           onPressed: () {
 
-                            LoginScreenArgs loginargs = LoginScreenArgs(role:1);
-                            Navigator.of(context).pushReplacementNamed(SelectRoleScreen.ROUTE);
+                           // LoginScreenArgs loginargs = LoginScreenArgs(role:1);
+                          //  Navigator.of(context).pushReplacementNamed(SelectRoleScreen.ROUTE);
                           },
                           text: "Login",
                         ),

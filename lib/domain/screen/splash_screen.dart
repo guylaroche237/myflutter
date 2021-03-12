@@ -99,7 +99,7 @@ class SplashScreenState extends State<SplashScreen> {
                       child: Text('Start',style: TextStyle(color: Colors.white),),
                       onPressed: (){
 
-                        Navigator.of(context).pushReplacementNamed(ContinueAsScreen.ROUTE);
+                        //   Navigator.of(context).pushReplacementNamed(ContinueAsScreen.ROUTE);
                       },
                     ),
                   )

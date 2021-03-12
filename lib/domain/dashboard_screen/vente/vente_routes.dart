@@ -1,7 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutter/domain/dashboard_screen/stock/trier_stock_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/vente/add_vente_screen.dart';
+import 'package:myflutter/domain/dashboard_screen/vente/trier_vente_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/vente/vente_detail_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/vente/vente_screen.dart';
 
@@ -40,6 +42,13 @@ class VenteRoute extends StatelessWidget{
               builder: (context) => VenteDetailScreen(
                 args: settings.arguments,
               ),
+              settings: settings
+            );
+            break;
+
+          case TrierVenteScreen.ROUTE:
+            return MaterialPageRoute(
+              builder: (_) => TrierVenteScreen(),
               settings: settings
             );
             break;

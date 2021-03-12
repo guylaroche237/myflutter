@@ -17,17 +17,28 @@ class CommandeCard extends StatelessWidget{
         child: Column(
           children: [
             Container(
-              child: ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(args.nomProduit,style: TextStyle(fontWeight: FontWeight.bold),),
-                    Text(args.qte.toString())
-                  ],
-                ),
-                subtitle: Text("prix Total"),
-                trailing: IconButton(icon: Icon(Icons.delete,color: Colors.red,),onPressed: (){this.onPressed();},),
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Text(args.nomProduit,style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text("prix Total"),
+                    trailing: IconButton(icon: Icon(Icons.delete,color: Colors.red,),onPressed: (){this.onPressed();},),
 
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(4),
+                        child: Text("Qte Bouteille:_"+args.qte.toString()??""),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(4),
+                        child: Text("Qte Casier_"+args.qtec.toString()??""),
+                      )
+                    ],
+                  )
+                ],
               ),
             )
           ],

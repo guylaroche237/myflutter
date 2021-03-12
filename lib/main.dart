@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myflutter/domain/screen/login_screen/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'domain/acceuil_screen.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.blue, scaffoldBackgroundColor: Colors.white),
         navigatorKey: MainNavigatorKey.key,
-        initialRoute: "/",
+        initialRoute: LoginScreen.ROUTE,
         onGenerateRoute: Router.generateRoute,
       ),
     );

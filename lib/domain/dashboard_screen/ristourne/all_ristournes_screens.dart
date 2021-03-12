@@ -18,11 +18,12 @@ class AllRistourneScreen extends StatefulWidget{
 }
 
 class _RistourneScreenState extends State<AllRistourneScreen>{
- Ristourne ris = Ristourne(date: "22.09.2020",fournisseur: "Guinness",benefice: 50325,color: Colors.white,image: "assets/images/guinnes.png",bagroundColor: Colors.black);
- Ristourne ris1 = Ristourne(date: "05.09.2021",fournisseur: "Brasserie",benefice: 2525,image: "assets/images/vb.jpg",color: Colors.black,bagroundColor: Colors.orange );
- Ristourne ris2 = Ristourne(date: "22.09.2019",fournisseur: "Source Du Pays",benefice: 5325,image: "assets/images/malta.png",color: Colors.indigo,bagroundColor: Colors.white);
- Ristourne ris3 = Ristourne(date: "2.09.2020",fournisseur: "UCB",benefice: 325,image: "assets/images/ucb.jpg",color: Colors.white,bagroundColor: Colors.red);
- 
+  Ristourne ris = Ristourne(date: "22.09.2020",fournisseur: "Guinness",benefice: 50325,color: Colors.white,image: "assets/images/guinness.jpg",bagroundColor: Colors.black);
+  Ristourne ris1 = Ristourne(date: "05.09.2021",fournisseur: "Brasserie",benefice: 2525,image: "assets/images/sabc.jpg",color: Colors.black,bagroundColor: ThemeHelper.BRASSERI_COLOR);
+  Ristourne ris2 = Ristourne(date: "22.09.2019",fournisseur: "Source Du Pays",benefice: 5325,image: "assets/images/source.png",color: Colors.indigo,bagroundColor: Colors.white);
+  Ristourne ris3 = Ristourne(date: "2.09.2020",fournisseur: "UCB",benefice: 325,image: "assets/images/ucb.png",color: Colors.white,bagroundColor: ThemeHelper.UCB_COLOR);
+  Ristourne autre = Ristourne(date: "2.09.2020",fournisseur: "Autre",benefice: 325,image: "assets/images/backgroun.png",color: Colors.black,bagroundColor: Colors.white10);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -64,6 +65,7 @@ class _RistourneScreenState extends State<AllRistourneScreen>{
                         RistourneItem(ristourne: ris1,),
                         RistourneItem(ristourne: ris2,),
                         RistourneItem(ristourne: ris3,),
+                        RistourneItem(ristourne: autre,),
 
                       ],
                     )),

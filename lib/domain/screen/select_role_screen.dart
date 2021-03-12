@@ -38,7 +38,7 @@ class SelectRoleScreen extends StatelessWidget {
                               child: SecondaryButton(
                                   onPressed: () {
                                     LoginScreenArgs loginargs = LoginScreenArgs(role:0);
-                                    Navigator.of(context).pushReplacementNamed(LoginScreen.ROUTE,arguments: loginargs);
+                                //    Navigator.of(context).pushReplacementNamed(LoginScreen.ROUTE,arguments: loginargs);
 
                                   },
                                   child: Row(
@@ -56,8 +56,8 @@ class SelectRoleScreen extends StatelessWidget {
                               width: MediaQuery.of(context).size.width*0.7,
                               child: PrimaryButton(
                                 onPressed: () {
-                                  LoginScreenArgs loginargs = LoginScreenArgs(role:1);
-                                  Navigator.of(context).pushReplacementNamed(LoginScreen.ROUTE,arguments: loginargs);
+                                 // LoginScreenArgs loginargs = LoginScreenArgs(role:1);
+                                //  Navigator.of(context).pushReplacementNamed(LoginScreen.ROUTE,arguments: loginargs);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
