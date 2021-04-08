@@ -10,7 +10,7 @@ enum ProduitStatus{
 }
 
 class Produit{
- int id;
+  String id;
  String nom;
  String type;
  String lot;
@@ -97,6 +97,10 @@ class Produit{
    }else if(60 > this.quantite - this.quantiteAlerte){
      return "PARFAIT";
    }
+ }
+
+ static List<Produit> listFromJson(List<dynamic> json) {
+   return List<Produit>.from(json.map((v) => Produit.fromJson(v)));
  }
 
  ProduitStatus get status => EnumToString.fromString(ProduitStatus.values, this.produitstatus);

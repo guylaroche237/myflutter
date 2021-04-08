@@ -1,16 +1,14 @@
 import 'package:myflutter/model/point_vente.dart';
+import 'package:myflutter/model/produit_vendu.dart';
 
 class Vente{
   String createur;
   String dateCreation;
   String id;
+  List<ProduitVendu> listproduitVendu;
   PointVente pointVente;
-  String dateVente;
   int prixTotal;
   int quantite;
-  double quantiteProduit;
-  String fournisseur;
-  String nomProduit;
 
   Vente({
     this.createur,
@@ -19,8 +17,8 @@ class Vente{
     this.pointVente,
     this.prixTotal,
     this.quantite,
-    this.dateVente,
-    this.fournisseur,this.quantiteProduit,this.nomProduit
+    this.listproduitVendu
+
   });
 
   Vente.fromJson(Map<String,dynamic> json){
@@ -30,6 +28,7 @@ class Vente{
     pointVente = json["pointVente"];
     prixTotal = json["prixTotal"];
     quantite = json["quantite"];
+    listproduitVendu = ProduitVendu.listFromJson(json["listproduitVendu"]);
   }
 
   Map<String,dynamic> toJson(){
@@ -40,6 +39,11 @@ class Vente{
     data["pointVente"] = this.pointVente;
     data["prixTotal"] = this.prixTotal;
     data["quantite"] = this.quantite;
-
   }
+
+  static List<Vente> listFromJson(List<dynamic> json) {
+    return List<Vente>.from(json.map((v) => Vente.fromJson(v)));
+  }
+
+
 }

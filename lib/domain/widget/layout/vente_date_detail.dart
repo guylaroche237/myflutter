@@ -22,7 +22,7 @@ class VenteDateDetail extends StatelessWidget {
             Container(
                 padding: EdgeInsets.only(left: 5,right: 10),
                 child: Icon(Icons.date_range)),
-            Text("${livraison.dateVente}",),
+            Text("${livraison.dateCreation}",),
           ],
         ),
       ],

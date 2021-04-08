@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:myflutter/domain/dashboard_screen/agent/register_success_screen.dart';
+import 'package:myflutter/domain/dashboard_screen/agent/register_user_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/benefices/benefice_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/commande/add_commande_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/commande/all_commandes_screen.dart';
@@ -98,6 +100,19 @@ class HomeScreen extends StatelessWidget{
           case PerteScreen.ROUTE:
             return MaterialPageRoute(
               builder: (context) => PerteScreen(),
+              settings: settings
+            );
+            break;
+
+          case RegisterUserScreen.ROUTE:
+            return MaterialPageRoute(
+              builder: (context) => RegisterUserScreen(),
+              settings: settings
+            );
+
+          case RegisterSuccessScreen.ROUTE:
+            return MaterialPageRoute(
+              builder: (context) => RegisterSuccessScreen(successArgs: settings.arguments,),
               settings: settings
             );
             break;

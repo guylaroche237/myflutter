@@ -1,21 +1,33 @@
+import 'package:myflutter/model/detailsInventaire.dart';
 import 'package:myflutter/model/point_vente.dart';
 import 'package:myflutter/model/produit.dart';
 
 class ProduitStock{
+  String dateCreation;
   String dateMAJ;
+  DetailsInventaire detailsInventaire;
   int id;
   String modificateur;
   PointVente pointVente;
-  Produit produit;
-  int quantite;
+  int prixVente	;
+  int  stockInitial	;
+  int stockMarge	;
+  int stockPerte;
+  int stockReel	;
+  int stockTheorique;
+
 
   ProduitStock({
     this.dateMAJ,
     this.id,
     this.modificateur,
     this.pointVente,
-    this.produit,
-    this.quantite
+    this.stockInitial,
+    this.stockMarge,
+    this.stockPerte,
+    this.stockReel,
+    this.stockTheorique
+
 });
 
   ProduitStock.fromJson(Map<String,dynamic> json){
@@ -23,8 +35,12 @@ class ProduitStock{
     id = json["id"];
     modificateur = json["modificateur"];
     pointVente = json["pointVente"];
-    produit = json["produit"];
-    quantite = json["quantite"];
+    stockInitial = json["stockInitial"];
+    stockMarge = json["stockMarge"];
+    stockPerte = json["stockPerte"];
+    stockReel = json["stockReel"];
+    stockTheorique = json["stockTheorique"];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -33,8 +49,11 @@ class ProduitStock{
     data["modificateur"] = this.modificateur;
     data["id"] = this.id;
     data["pointVente"] = this.pointVente;
-    data["produit"] = this.produit;
-    data["quantite"] = this.quantite;
+
     return data;
+  }
+
+  static List<ProduitStock> listFromJson(List<dynamic> json) {
+    return List<ProduitStock>.from(json.map((v) => ProduitStock.fromJson(v)));
   }
 }

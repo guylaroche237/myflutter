@@ -1,16 +1,21 @@
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/domain/helpers/validator.dart';
+import 'package:myflutter/domain/provider/auth_provider.dart';
 import 'package:myflutter/domain/screen/login_screen/login_screen.dart';
 import 'package:myflutter/domain/widget/button/secondary_button.dart';
 import 'package:myflutter/domain/widget/form/text_fields/light_password_text_field.dart';
 import 'package:myflutter/domain/widget/form/text_fields/light_text_field.dart';
 import 'package:myflutter/domain/widget/layout/container_with_background.dart';
+import 'package:myflutter/infrastructure/abstract_types/api/abstract_api_error.dart';
+import 'package:myflutter/infrastructure/api/api_client.dart';
+import 'package:myflutter/infrastructure/api/requests/register_request.dart';
+import 'package:provider/provider.dart';
 
-import '../continu_as_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   RegistrationScreen({Key key,}) : super(key: key);
@@ -23,7 +28,9 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   String _password;
+  String _pass;
   String _email;
+  String phone;
  // Role _selectedRole;
   bool _termsAccepted;
   bool _inAsyncCall = false;
@@ -35,12 +42,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _email = "";
   //  _selectedRole = widget.role;
     _password = "";
+    phone = "";
+    _pass = "";
 
   }
 
   @override
   Widget build(BuildContext context) {
     MediaQueryData mq = MediaQuery.of(context);
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
         body: SafeArea(
@@ -118,7 +128,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                     }
                                                     return null;
                                                   },
-                                                  hintText: "Nom Du Bar",
+                                                  hintText: "Your Email",
                                                   onChanged: (value) {
                                                     setState(() {
                                                       _email = value.trim();
@@ -128,8 +138,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                 LightTextField(
                                                   keyboardType: TextInputType.phone,
                                                   validator: (value) {
-                                                    if (!(Validator.isEmail(value) &&
-                                                        Validator.isNotEmpty(value))) {
+                                                    if (!Validator.isNotEmpty(value)) {
                                                       return "The value entered is not valid";
                                                     }
                                                     return null;
@@ -137,7 +146,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                   hintText: "Numero Telephone",
                                                   onChanged: (value) {
                                                     setState(() {
-                                                      _email = value.trim();
+                                                      phone = value.trim();
                                                     });
                                                   },
                                                 ),
@@ -158,9 +167,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                 ),
                                                 LightPasswordTextField(
                                                   hintText: "Enter password again",
-                                                  onChanged: (value) {},
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _pass = value;
+                                                    });
+
+                                                  },
                                                   validator: (value) {
-                                                    if (value != _password) {
+                                                    if (value != _password || ! Validator.isNotEmpty(value)) {
                                                       return "The password doesn't match";
                                                     }
                                                     return null;
@@ -253,11 +267,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       return false;
     }
 
-    if (!_termsAccepted) {
-      BotToast.showSimpleNotification(
-          title: "You must agree with terms and conditions");
-      return false;
-    }
+
     return true;
   }
 
@@ -265,10 +275,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (!_validate()) {
       return;
     }
+    setState(() {
+      _inAsyncCall = true;
+    });
+    //RegisterRequest registerRequest = RegisterRequest(phone: phone,password: _password,email: _email);
+    try {
+     // await ApiClient.execOrFail(registerRequest);
+      onRegistrationSuceed();
+    } catch (err) {
+      _onRegistrationFailed(err);
+    }
+    setState(() {
+      _inAsyncCall = false;
+    });
 
   }
 
   void onRegistrationSuceed({String message}) {
+    Navigator.pushReplacementNamed(context, LoginScreen.ROUTE);
+    BotToast.showSimpleNotification(
+        title: message ??
+            "Creation effectuer",
+        duration: Duration(minutes: 1));
 
   }
 
@@ -278,6 +306,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void _onRegistrationFailed(err) {
+    if (err is AbstractApiError) {
+      err.toToast(context);
+    } else {
+      BotToast.showSimpleNotification(
+          title: "Unexpected error, please try again");
+    }
 
   }
 }

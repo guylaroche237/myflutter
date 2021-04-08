@@ -1,34 +1,46 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myflutter/domain/provider/commande_provider.dart';
+import 'package:myflutter/domain/provider/produit_provider.dart';
 import 'package:myflutter/domain/screen/login_screen/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'domain/acceuil_screen.dart';
+import 'domain/provider/auth_provider.dart';
 import 'domain/router.dart';
+import 'infrastructure/persistence/abstract_persister.dart';
+import 'infrastructure/persistence/shared_preference_persister.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  // SharedPreferencePersister persister = SharedPreferencePersister(prefs);
-  /** SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+   SharedPreferencePersister persister = SharedPreferencePersister(prefs);
+   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
       runApp(MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => AuthProvider(persister)),
+        ChangeNotifierProvider(create: (context) => CommandeProvider(),),
+        ChangeNotifierProvider(create: (context) => ProduitProvider(),),
+
       ],
       child: new MyApp(
-      //  persister: persister,
+        persister: persister,
       ),
       ));
-      });**/
-  runApp(MyApp());
+      });
+ // runApp(MyApp());
 
 }
 
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  final AbstractPersister persister;
+
+  const MyApp({Key key, this.persister}) : super(key: key);
   @override
   Widget build(BuildContext context) {
      return BotToastInit(

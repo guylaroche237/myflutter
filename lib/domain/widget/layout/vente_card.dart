@@ -21,7 +21,7 @@ class VenteCard extends StatelessWidget{
               child: Column(
                 children: [
                   ListTile(
-                    title: Text(args.vente.nomProduit,style: TextStyle(fontWeight: FontWeight.bold),),
+                    title: Text(args.vente.createur,style: TextStyle(fontWeight: FontWeight.bold),),
                     subtitle: Text("prix Total"),
                     trailing: IconButton(icon: Icon(Icons.delete,color: Colors.red,),onPressed: (){this.onPressed();},),
 
@@ -35,7 +35,7 @@ class VenteCard extends StatelessWidget{
                       ),
                       Container(
                         padding: EdgeInsets.all(4),
-                        child: Text(args.vente.quantiteProduit.toString()),
+                        child: Text(args.vente.quantite.toString()),
                       )
                     ],
                   )

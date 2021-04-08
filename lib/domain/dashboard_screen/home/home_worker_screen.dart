@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:myflutter/domain/dashboard_screen/agent/register_user_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 
 class HomeWorkerDetailScreen extends StatefulWidget{
@@ -30,12 +31,12 @@ class _WorkerHomeDetailScreenState extends State<HomeWorkerDetailScreen>{
     MediaQueryData mq = MediaQuery.of(context);
 
     List<HomeInfo> listes = [
-      HomeInfo(notifications: 3,title: "Add Achat",alertMessage: "",redirect: "",logo: Icon(Icons.cloud_download,color: Colors.green,),),
-      HomeInfo(notifications: 10,title: "Add Vente",alertMessage: "",redirect:"",logo: Icon(Icons.add_circle,color: Colors.green,)),
-      HomeInfo(notifications: 58,title: "Fournisseurs",alertMessage: "",redirect: "",logo: Icon(Icons.airport_shuttle,color: Colors.green,)),
-      HomeInfo(notifications: 12,title: "Produit Vendu",alertMessage: "",redirect: "",logo: Icon(Icons.business_center,color: Colors.green,)),
-      HomeInfo(notifications: 20,title: "Produit Achete",alertMessage: "",redirect:"",logo: Icon(Icons.crop,color: Colors.green,)),
-      HomeInfo(notifications: 22,title: "MY Shop",alertMessage: "",redirect: "",logo: Icon(Icons.local_bar,color: Colors.green,)),
+      HomeInfo(notifications: 3,title: "New User",alertMessage: "",redirect: RegisterUserScreen.ROUTE,logo: Icon(Icons.cloud_download,color: Colors.green,),),
+    //  HomeInfo(notifications: 10,title: "Add Vente",alertMessage: "",redirect:"",logo: Icon(Icons.add_circle,color: Colors.green,)),
+     // HomeInfo(notifications: 58,title: "Fournisseurs",alertMessage: "",redirect: "",logo: Icon(Icons.airport_shuttle,color: Colors.green,)),
+    //  HomeInfo(notifications: 12,title: "Produit Vendu",alertMessage: "",redirect: "",logo: Icon(Icons.business_center,color: Colors.green,)),
+     // HomeInfo(notifications: 20,title: "Produit Achete",alertMessage: "",redirect:"",logo: Icon(Icons.crop,color: Colors.green,)),
+    //  HomeInfo(notifications: 22,title: "MY Shop",alertMessage: "",redirect: "",logo: Icon(Icons.local_bar,color: Colors.green,)),
     ];
     return ModalProgressHUD(
       inAsyncCall: false,

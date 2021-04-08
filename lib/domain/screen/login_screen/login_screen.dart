@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -5,11 +6,20 @@ import 'package:myflutter/domain/dashboard_screen/patron_dashboard_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/worker_dashboard_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/domain/helpers/validator.dart';
+import 'package:myflutter/domain/provider/auth_provider.dart';
+import 'package:myflutter/domain/screen/login_screen/update_pass_arg.dart';
+import 'package:myflutter/domain/screen/login_screen/update_password_screen.dart';
 import 'package:myflutter/domain/screen/registration_screeen/registration_screen.dart';
 import 'package:myflutter/domain/widget/button/secondary_button.dart';
 import 'package:myflutter/domain/widget/form/text_fields/light_password_text_field.dart';
 import 'package:myflutter/domain/widget/form/text_fields/light_text_field.dart';
 import 'package:myflutter/domain/widget/layout/container_with_background.dart';
+import 'package:myflutter/infrastructure/abstract_types/api/abstract_api_error.dart';
+import 'package:myflutter/infrastructure/api/api_client.dart';
+import 'package:myflutter/infrastructure/api/requests/find_all_produit_request.dart';
+import 'package:myflutter/model/produit.dart';
+import 'package:myflutter/model/token.dart';
+import 'package:provider/provider.dart';
 
 import '../../router.dart';
 import '../continu_as_screen.dart';
@@ -25,11 +35,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _email;
+  String phone;
   String _password;
   bool _inAsyncCall = false;
   bool no_forget_me ;
   final _formKey = GlobalKey<FormState>();
+  List<Produit> produits = [];
 
 
 
@@ -38,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
    // _selectedRole = widget.args.role;
-  //  AuthProvider authProvider = Provider.of<AuthProvider>(context,listen: false);
+   AuthProvider authProvider = Provider.of<AuthProvider>(context,listen: false);
   //  _email = authProvider.getEmail();
 
   }
@@ -46,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mq = MediaQuery.of(context);
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
         body: SafeArea(
@@ -87,57 +99,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                               mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                               children: <Widget>[
-                                            /**    Align(
-                                                  alignment: Alignment.bottomCenter,
-                                                  child: Column(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                      children: [
-                                                        FacebookButton(
-                                                          onPressed: () {
-                                                            _loginWithFacebook(authProvider,
-                                                                jobProvider,
-                                                                messageProvider);
-                                                          },
-                                                          text: "Login with facebook",
 
-                                                        ),
-                                                        SizedBox(width: 8),
-                                                        GoogleButton(
-                                                          onPressed: () {
-                                                            _loginWithGoogle(
-                                                                authProvider,
-                                                                jobProvider,
-                                                                messageProvider);
-                                                          },
-                                                          text: "Login with google ",
-                                                        )
-                                                      ]),
-                                                ),
-                                                TextSeparator(
-                                                  text: "OR",
-                                                ),**/
 
                                                 LightTextField(
                                                   keyboardType:
-                                                  TextInputType.emailAddress,
+                                                  TextInputType.phone,
                                                   //initialValue: authProvider.getEmail(),
-                                                  hintText: "Nom Du Bar",
+                                                  hintText: "Numero  Telephone",
                                                   onChanged: (value) {
                                                     String v = value;
                                                     setState(() {
-                                                      _email = v.trim();
+                                                      phone = v.trim();
                                                     });
                                                   },
                                                   validator: (value) {
-                                                    if (!(Validator.isEmail(value) &&
-                                                        Validator.isNotEmpty(value))) {
+                                                    if (!Validator.isNotEmpty(value)) {
                                                       return "The value entered is not valid";
                                                     }
                                                     return null;
                                                   },
                                                 ),
+
                                                 LightPasswordTextField(
                                                   hintText: "Your password",
                                                   onChanged: (value) {
@@ -154,25 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     return null;
                                                   },
                                                 ),
-                                                LightTextField(
-                                                  keyboardType:
-                                                  TextInputType.phone,
-                                                  //initialValue: authProvider.getEmail(),
-                                                  hintText: "Numero  Telephone",
-                                                  onChanged: (value) {
-                                                    String v = value;
-                                                    setState(() {
-                                                      _email = v.trim();
-                                                    });
-                                                  },
-                                                  validator: (value) {
-                                                    if (!(Validator.isEmail(value) &&
-                                                        Validator.isNotEmpty(value))) {
-                                                      return "The value entered is not valid";
-                                                    }
-                                                    return null;
-                                                  },
-                                                ),
+
                                                 Row(
                                                   children: <Widget>[
                                                     Theme(
@@ -211,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 SecondaryButton(
                                                     onPressed: () {
                                                       //_email = authProvider.getEmail();
-                                                     _attemptLogin(_email,_password);
+                                                     _attemptLogin(phone,_password,authProvider);
 
                                                     },
                                                     text: "Login"),
@@ -242,20 +206,71 @@ class _LoginScreenState extends State<LoginScreen> {
             )));
   }
 
-  void _attemptLogin(String email,String password) async {
-    if(email == 'admin@gmail.com' && password == 'admin'){
-      onLoginSucess();
+  void _attemptLogin(String email,String password,AuthProvider authProvider) async {
+
+    if (!_formKey.currentState.validate()) {
+      print("form not valid");
+      return;
+    }
+
+    setState(() {
+      _inAsyncCall = true;
+    });
+
+    try {
+      Token token =  await authProvider.login(phone, password);
+
+
+      print(token.id);
+      setState(() {
+        _inAsyncCall = false;
+      });
+      try {
+        this.onLoginSucess(token);
+      } catch (err) {
+        print(err);
+      }
+      return;
+    } catch (err) {
+      if (err is AbstractApiError) {
+
+        BotToast.showSimpleNotification(title: "Username Or Password Not Found");
+       // err.toToast(err);
+      } else {
+        print(err.toString());
+        print(err.stackTrace);
+        BotToast.showSimpleNotification(title: "Unexpected error, please try again");
+      }
+      setState(() {
+        _inAsyncCall = false;
+      });
     }
 
   }
 
-  void onLoginSucess() {
-    //if(widget.args.role == 0){handleEmployerLoginSuccess();}else{handleWorkerLoginSuccess();}
-    handleEmployerLoginSuccess();
+  void onLoginSucess(Token token) {
+    BotToast.showSimpleNotification(title: "Successfuly logged in");
+    if(token.isAgent()){
+      handleAgentLoginSuccess();
+
+    }else if(token.isOwner()){
+      if(token.isActive){
+        // Son Compte est deja Activer
+        handleEmployerLoginSuccess();
+      }else{
+        UpdatePasswordArgs args = UpdatePasswordArgs(token,_password);
+        Navigator.pushReplacementNamed(context,UpdatePasswordScreen.ROUTE,arguments: args);
+
+      }
+
+    }else if(token.isAgentStock()){
+
+    }
 
   }
 
-  void handleWorkerLoginSuccess() {
+  void handleAgentLoginSuccess() {
+    Navigator.pushNamed(context, WorkerDashboardScreen.ROUTE);
     MainNavigatorKey.key.currentState.pushReplacementNamed(WorkerDashboardScreen.ROUTE);
     return;
   }
@@ -271,6 +286,8 @@ class _LoginScreenState extends State<LoginScreen> {
   //  job.images = jobProvider.unpublishedCachedJob.images ?? [];
 
   }
+
+
 
 
 

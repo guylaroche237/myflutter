@@ -154,7 +154,7 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
                         text: "Insert Produit",
                         onPressed: (){
                         //  Vente cmd = Vente(title: selectProduits,qte: qte);
-                          Vente cmd = Vente(nomProduit: selectProduits,quantiteProduit: qte);
+                          Vente cmd = Vente(createur: selectProduits,quantite: int.parse(qte.toString()));
                           setState(() {
                             list.add(cmd);
                             selectProduits = null;
@@ -227,7 +227,7 @@ class _AddVenteScreenState extends State<AddVenteScreen>{
                         int pos = 0;
                         int i = 0;
                         list.forEach((element) {
-                          if(element.nomProduit == args.vente.nomProduit){
+                          if(element.createur == args.vente.createur){
                             print("element trouver");
                             pos = i;
                           }

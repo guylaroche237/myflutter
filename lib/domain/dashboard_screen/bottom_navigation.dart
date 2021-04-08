@@ -52,7 +52,7 @@ class BottomNavigation extends StatelessWidget {
           showUnselectedLabels: true,
           iconSize: 32,
           selectedItemColor: ThemeHelper.SECONDARY_COLOR,
-          unselectedItemColor: ThemeHelper.PRIMARY_COLOR,
+          unselectedItemColor: ThemeHelper.SUCCES_COLOR,
           type: BottomNavigationBarType.shifting,
           items: _buildBottomNavigationItemsFromRole(),
           onTap: (index) {

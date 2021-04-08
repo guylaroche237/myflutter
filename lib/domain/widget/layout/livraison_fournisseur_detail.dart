@@ -31,7 +31,7 @@ class LivraisonFournisseurDetail extends StatelessWidget {
                 ),
                 margin: EdgeInsets.all(5),
                 padding: EdgeInsets.only(right: 1),
-                child: Center(child: Container(padding: EdgeInsets.all(5),child: Text("${livraison.fournisseur}",)))),
+                child: Center(child: Container(padding: EdgeInsets.all(5),child: Text((livraison.commande.fournisseur == null)?"No Value":"${livraison.commande.fournisseur.nom}",)))),
 
           ],
         ),

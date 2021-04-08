@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myflutter/domain/dashboard_screen/inventaire/add_inventaire_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/inventaire/detail_inventaire_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/ristourne/all_ristournes_screens.dart';
+import 'package:myflutter/domain/screen/login_screen/update_password_screen.dart';
 import 'package:myflutter/domain/screen/splash_screen.dart';
 import 'continue_as_screen.dart';
 import 'dashboard_screen/benefices/benefice_screen.dart';
@@ -30,6 +31,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => LoginScreen(args: settings.arguments,));
       case RegistrationScreen.ROUTE:
         return MaterialPageRoute(builder: (_) => RegistrationScreen());
+      case UpdatePasswordScreen.ROUTE:
+        return MaterialPageRoute(builder: (_) => UpdatePasswordScreen(
+          args: settings.arguments,
+        ));
       case WorkerDashboardScreen.ROUTE:
         return MaterialPageRoute(builder: (_) => WorkerDashboardScreen());
       case SelectRoleScreen.ROUTE:
@@ -88,7 +93,9 @@ class Router {
 
       case AllCommandeScreen.ROUTE:
         return MaterialPageRoute(
-            builder: (context)=> AllCommandeScreen(),
+            builder: (context)=> AllCommandeScreen(
+
+            ),
             settings: settings
         );
       default:

@@ -1,4 +1,5 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -6,6 +7,8 @@ import 'package:myflutter/domain/dashboard_screen/livraison/livraison_args.dart'
 import 'package:myflutter/domain/dashboard_screen/vente/vente_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/domain/helpers/validator.dart';
+import 'package:myflutter/domain/provider/auth_provider.dart';
+import 'package:myflutter/domain/provider/commande_provider.dart';
 import 'package:myflutter/domain/widget/button/primary_button.dart';
 import 'package:myflutter/domain/widget/button/secondary_button.dart';
 import 'package:myflutter/domain/widget/form/text_fields/black_outline_text_field.dart';
@@ -16,6 +19,10 @@ import 'package:myflutter/domain/widget/layout/livraison_amount_detail.dart';
 import 'package:myflutter/domain/widget/layout/livraison_date_detail.dart';
 import 'package:myflutter/domain/widget/layout/livraison_fournisseur_detail.dart';
 import 'package:myflutter/domain/widget/layout/livraison_item_list_detail.dart';
+import 'package:myflutter/model/details_commande.dart';
+import 'package:myflutter/model/livraison.dart';
+import 'package:myflutter/model/token.dart';
+import 'package:provider/provider.dart';
 
 import 'command_args.dart';
 
@@ -39,10 +46,25 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
   var _sugestionTextFieldController = new TextEditingController();
   String distributeur = "";
   String selectDistributeur="";
+  bool inAsyncoll = false;
+  List<Data> modifs = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.args.livraison.commande.toJson());
+    print("-----------------------------------------");
+    print(widget.args.livraison.fournisseur);
+
+
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    CommandeProvider commandeProvider = Provider.of<CommandeProvider>(context);
 
 
     return Scaffold(
@@ -80,7 +102,7 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                             child: BlackOutlineTextField(
                                 onChanged: (v) {
                                   setState(() {
-                                    //prixUnitaire = v ;
+                                    numFacture = v ;
                                   });
                                 },
                                 hintText:"Numero Facture",
@@ -99,7 +121,7 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                           subtitle: Text(numFacture??"vide"),
                           trailing: IconButton(icon: Icon(Icons.edit,color: Colors.blue,), onPressed: (){ _showDialogUpdateFactureNum();}),
                         ),*/,
-                       Divider(height: 2,color: Colors.black,),
+                     /**  Divider(height: 2,color: Colors.black,),
                        FilterArgumentRow(
                          label: "Distributeur",
                          isColumn: false,
@@ -122,7 +144,7 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                                }),
                          ),
 
-                       ),
+                       ),**/
                        /** Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: LivraisonAmountDetail(livraison: widget.args.livraison,),
@@ -135,12 +157,13 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Liste Des Produits Livree", style: ThemeHelper.paragraph(color: Colors.black, isBold: true)),
+                                Text("Liste Des Produits Commandes", style: ThemeHelper.paragraph(color: Colors.black, isBold: true)),
                                 SizedBox(height: 8),
                                 Container(
                                     padding: EdgeInsets.only(left: 5,right: 10),
                                     child: Column(
-                                      children: titles.map((e) {
+                                      children: widget.args.livraison.commande.detailsCommande.map((e) {
+                                        DetailsCommande detailsCmd = e;
                                         CommandeArgs cmd = CommandeArgs() ;
                                         //CommandeArgs(nomProduit: e,qte:22,prixUnitaire: 100 );
                                         cmd.nomProduit = "pierre";
@@ -158,10 +181,10 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                                                     title: Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
-                                                        Text(cmd.nomProduit,style: TextStyle(fontWeight: FontWeight.bold),)
+                                                        Text(detailsCmd.produit.nom,style: TextStyle(fontWeight: FontWeight.bold),)
                                                       ],
                                                     ),
-                                                    subtitle: Text("prix Total"),
+                                                    subtitle: Text(detailsCmd.prixTotalCmde.toString()+" Frs"),
                                                     // trailing: IconButton(icon: Icon(Icons.edit,color: Colors.blue,),onPressed: (){this.onPressed();},),
 
                                                   ),
@@ -172,18 +195,19 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                                                   child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                      Text("Qte Cmd : "+cmd.qte.toString()),
+                                                      Text("Qte Cmd : "+detailsCmd.qteCommandee.toString()),
                                                       Container(
                                                         padding: EdgeInsets.all(10),
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
-                                                            Text("Qte Lvr :"),
+                                                            Text("Qte Lvre :"),
                                                             InkWell(
                                                               onTap: (){
-                                                                _showDialogUpdateQuantite(cmd);
+                                                                _showDialogUpdateQuantite(e.id);
                                                                 setState(() {
                                                                     cmd.qteLivrer = 12;
+
                                                                 });
                                                               },
                                                               child: Container(
@@ -191,7 +215,7 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                                                                   width: 40,
                                                                   height: 40,
                                                                   decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.blueGrey),
-                                                                  child: Center(child: Text(cmd.qteLivrer.toString()))),
+                                                                  child: Center(child: Text(getVal(e.id)))),
                                                             )
                                                           ],
                                                         ),
@@ -224,7 +248,13 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      PrimaryButton(text: "Valid",onPressed: (){},),
+                      PrimaryButton(text: "Valid",onPressed: (){
+                        Livraison tmp = widget.args.livraison;
+                        print(tmp.commande.toJson());
+                        print(tmp.commande.detailsCommande.length);
+                        Livraison livr = Livraison(fournisseur: "laroche",prixTotal: 500,commande: tmp.commande,numFacture: numFacture,createur: authProvider.token.id.toString(),quantiteProduit: tmp.commande.detailsCommande.length);
+                        saveLivraison(widget.args.livraison, commandeProvider, authProvider.token);
+                      },),
                       SecondaryButton(text: "Cancel",onPressed: (){
                         Navigator.pop(context);
                       },)
@@ -372,7 +402,8 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
 
 
 
-  void _showDialogUpdateQuantite(CommandeArgs args){
+  int  _showDialogUpdateQuantite(int pos){
+    int value = 0 ;
 
     showDialog(context : context,builder: (BuildContext context){
       return AlertDialog(
@@ -403,8 +434,9 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
                     PrimaryButton(text: 'Save',onPressed: (){
                       if(Validator.isNotEmpty(myController.text)){
                         setState((){
-                          args.qteLivrer = int.parse(myController.text);
-
+                          Data data = Data(pos: pos,val: int.parse(myController.text));
+                          modifs.add(data);
+                          value = int.parse(myController.text);
                           Navigator.of(context).pop();
                           myController.text="";
                         });
@@ -426,8 +458,47 @@ class StockDetailsSreenState extends State<CommandeLivrerDetailScreen> {
 
       );
     });
+    return value;
 
   }
 
+  saveLivraison(Livraison livrai,CommandeProvider commandeProvider,Token token) async {
+    setState(() {
+      inAsyncoll = true;
+    });
+    Livraison livraison = await commandeProvider.saveLivraison(livrai, token);
+    setState(() {
+      inAsyncoll = false;
+    });
+    if(livraison.id != null){
+      BotToast.showSimpleNotification(title: "Livraison Confirmer");
+      Navigator.pop(context);
 
+    }else{
+      BotToast.showSimpleNotification(title: "Requete Echouer !!!");
+
+    }
+
+  }
+
+  getVal(int id){
+    int res = 0;
+    if(modifs.length > 0){
+      modifs.forEach((element) {
+        if(element.pos == id){
+          res = element.val;
+        }
+      });
+    }
+    return res.toString();
+  }
+
+
+}
+
+class Data{
+  int pos;
+  int val;
+
+  Data({this.pos,this.val});
 }

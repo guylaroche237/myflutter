@@ -32,7 +32,7 @@ class _SearchScreenState extends State<VenteScreen> {
   Produit pro7 = Produit(fabriquant: "UCB",nom: "petite guiness",type: "biere",lot: "bouteille",quantite: 36,prixAchat1: 900,prixAchat2: 55,prixAchat3: 75,prixAchat4: 100,prixVente: 500,quantiteAlerte: 32,produitstatus: "NORMALE",siParisable: true,);
   Produit pro8 = Produit(fabriquant: "Guiness",nom: "grande guiness",type: "biere",lot: "bouteille",quantite: 31,prixAchat1: 400,prixAchat2: 55,prixAchat3: 75,prixAchat4: 100,prixVente: 500,quantiteAlerte: 6,produitstatus: "NORMALE",siParisable: true,);
 
-  Vente vente = Vente(dateVente: "23-08-2017",prixTotal: 500,fournisseur: "kamgain paul",quantiteProduit: 6);
+  Vente vente = Vente(dateCreation: "23-08-2017",prixTotal: 500,createur: "kamgain paul",quantite: 6);
 
 
   @override

@@ -1,44 +1,62 @@
 
 import 'package:myflutter/infrastructure/persistence/json_persistable.dart';
+import 'package:myflutter/model/role.dart';
 
 class Token extends JsonPersistable {
   static const PERSISTABLE_KEY = "TOKENE";
   String accessToken;
-  String tokenType;
   int id;
   String role;
-  String expirationDate;
+  String username;
+  String email;
+  bool isActive;
 
   Token(
       {this.accessToken,
-      this.tokenType,
+      this.username,
       this.id,
       this.role,
-      this.expirationDate});
+      this.email,
+      this.isActive});
 
   Token.fromJson(Map<String, dynamic> json) {
-    accessToken = json['accessToken'];
-    tokenType = json['tokenType'];
+    accessToken = json['token'];
+    isActive = json['active'];
     id = json['id'];
-    role = json['role'];
-    expirationDate = json['expirationDate'];
+    role = json['roles'][0];
+    username = json['username'];
+    email = json['email'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['accessToken'] = this.accessToken;
-    data['tokenType'] = this.tokenType;
     data['id'] = this.id;
     data['role'] = this.role;
-    data['expirationDate'] = this.expirationDate;
+    data['email'] = this.email;
+    data['username'] = this.username;
+    data['isActive'] = this.isActive;
     return data;
   }
 
-  bool isWorker(){
-    //return this.role == Role.worker().name;
+  bool isAdmin(){
+    return this.role == Role.admin().name;
   }
-  bool isEmployer(){
-    //return this.role == Role.employer().name;
+  bool isAgent(){
+    return this.role == Role.agent().name;
+  }
+
+  bool isManager(){
+    return this.role == Role.manager().name;
+  }
+  bool isAgentSale(){
+    return this.role == Role.agentsale().name;
+  }
+  bool isAgentStock(){
+    return this.role == Role.agentstock().name;
+  }
+  bool isOwner(){
+    return this.role == Role.owner().name;
   }
 
   @override

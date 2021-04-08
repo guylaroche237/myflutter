@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
 import 'package:myflutter/model/boutique.dart';
+import 'package:myflutter/model/point_vente.dart';
 
 class ShopLocalisationDetail extends StatelessWidget {
-  final Boutique boutique;
+  final PointVente boutique;
 
   const ShopLocalisationDetail({Key key, this.boutique}) : super(key: key);
   @override

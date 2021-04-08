@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutter/domain/dashboard_screen/agent/register_success_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/profile/edite_profile_screen.dart';
+import 'package:myflutter/domain/dashboard_screen/profile/register_worker_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
+import 'package:myflutter/domain/provider/auth_provider.dart';
 import 'package:myflutter/domain/widget/button/black_outline_button.dart';
 import 'package:myflutter/domain/widget/layout/shop_date_creation.dart';
 import 'package:myflutter/domain/widget/layout/shop_localisation.dart';
@@ -10,6 +13,7 @@ import 'package:myflutter/domain/widget/layout/user_account.dart';
 import 'package:myflutter/domain/widget/layout/user_plaintes.dart';
 import 'package:myflutter/model/boutique.dart';
 import 'package:myflutter/model/user.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget{
   static const ROUTE = "profil_routes/";
@@ -27,6 +31,14 @@ class _StockScreenState extends State<ProfileScreen>{
   bool active_plainte = false;
   bool active_deconnexion = false;
   bool active_notification = false;
+  AuthProvider authProvider;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    authProvider = Provider.of<AuthProvider>(context,listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +66,7 @@ class _StockScreenState extends State<ProfileScreen>{
               child: Column(
                 children: [
 
-                  Padding(padding: EdgeInsets.symmetric(vertical: 12),child: UserAccount(user: user,),),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 12),child: UserAccount(user: authProvider.user,),),
         
         Container(
           padding: EdgeInsets.all(5),
@@ -99,16 +111,16 @@ class _StockScreenState extends State<ProfileScreen>{
                     }, body: Column(
                       children: [
                         Padding(padding: EdgeInsets.symmetric(vertical: 8),
-                          child: ShopNameDetail(boutique: boutique,) ,),
+                          child: ShopNameDetail(boutique: authProvider.user.pointVente,) ,),
                         Divider(height: 8,color: Colors.black,),
                         Padding(padding: EdgeInsets.symmetric(vertical: 8),
-                          child: ShopLocalisationDetail(boutique: boutique,) ,
+                          child: ShopLocalisationDetail(boutique: authProvider.user.pointVente,) ,
                         )
                         ,
                         Divider(height: 5,color: Colors.black,),
 
                         Padding(padding: EdgeInsets.symmetric(vertical: 8),
-                          child: ShopDateDetail(boutique: boutique,) ,
+                          child: ShopDateDetail(boutique: authProvider.user.pointVente,) ,
                         ),
                         SizedBox(height: 5,),
                         Divider(height: 2,),
@@ -117,10 +129,22 @@ class _StockScreenState extends State<ProfileScreen>{
                           child: BlackButtonOutline(
                             text: "Edite Profile",
                             onPressed: (){
-                              Navigator.pushNamed(context,EditeProfileScreen.ROUTE,arguments: user);
+                              Navigator.pushNamed(context,EditeProfileScreen.ROUTE,arguments: authProvider.user);
                             },
                           ),
-                        )
+                        ),
+                        SizedBox(height: 5,),
+                        Divider(height: 2,),
+                        (authProvider.token.isOwner())? Container(
+                          padding: EdgeInsets.all(10),
+                          child: BlackButtonOutline(
+                            text: "New Worker",
+                            onPressed: (){
+                              Navigator.pushNamed(context,RegisterWorkerScreen.ROUTE);
+                            },
+                          ),
+                        ):SizedBox(),
+
 
                       ],
                     ),

@@ -11,7 +11,8 @@ import 'api_response.dart';
 import 'errors/generic_error.dart';
 
 class ApiClient implements AbstractApiClient {
-  final String host = "207.180.229.120:8080";
+  final String host = "207.180.229.120:8443";  //"207.180.229.120:8080";
+  //final String host = "192.168.43.159:8443";
   final String prefix = "";
   static ApiClient _instance;
 
@@ -78,8 +79,8 @@ class ApiClient implements AbstractApiClient {
   }
 
   Uri _makeUrl(AbstractApiRequest request) {
-    return Uri.https(
-        this.host, this.prefix + request.getUrl(), request.getParams());
+    return Uri.http(this.host, this.prefix + request.getUrl(), request.getParams());
+  //  return Uri.https(this.host, this.prefix + request.getUrl(), request.getParams());
   }
 
   static Future<AbstractApiResponse> exec(AbstractApiRequest request) async {

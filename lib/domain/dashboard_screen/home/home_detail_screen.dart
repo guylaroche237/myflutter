@@ -6,14 +6,20 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:myflutter/domain/dashboard_screen/benefices/benefice_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/commande/add_commande_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/commande/all_commandes_screen.dart';
+import 'package:myflutter/domain/dashboard_screen/commande/command_args.dart';
 import 'package:myflutter/domain/dashboard_screen/inventaire/add_inventaire_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/inventaire/all_inventaire_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/perte/perte_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/ristourne/all_ristournes_screens.dart';
 import 'package:myflutter/domain/dashboard_screen/vente/add_vente_screen.dart';
 import 'package:myflutter/domain/helpers/theme_helper.dart';
+import 'package:myflutter/domain/provider/auth_provider.dart';
+import 'package:myflutter/domain/provider/commande_provider.dart';
 import 'package:myflutter/domain/screen/filtre/etat_screen.dart';
 import 'package:myflutter/domain/widget/button/secondary_button.dart';
+import 'package:myflutter/model/commande.dart';
+import 'package:myflutter/model/produit.dart';
+import 'package:provider/provider.dart';
 
 
 class HomeDetailScreen extends StatefulWidget{
@@ -28,6 +34,9 @@ class HomeDetailScreen extends StatefulWidget{
 }
 
 class _HomeDetailScreenState extends State<HomeDetailScreen>{
+  List<Produit> produits = [];
+  List<Commande> commandes = [];
+  bool inAsyncall = false;
 
 
   @override
@@ -40,6 +49,8 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
   @override
   Widget build(BuildContext context) {
     MediaQueryData mq = MediaQuery.of(context);
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    CommandeProvider commandeProvider = Provider.of<CommandeProvider>(context);
 
     List<HomeInfo> listes = [
       HomeInfo(notifications: 3,title: "Commande",alertMessage: "",redirect: "",logo: Icon(Icons.cloud_download,color: Colors.white,),),
@@ -50,7 +61,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
       HomeInfo(notifications: 22,title: "Etats",alertMessage: "",redirect: FilterEtatScreen.ROUTE,logo: Icon(Icons.local_bar,color: Colors.white,)),
     ];
     return ModalProgressHUD(
-      inAsyncCall: false,
+      inAsyncCall: inAsyncall,
       child: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -66,15 +77,6 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
                   children: [
                     Text("Logo",style: ThemeHelper.heading1(color: Colors.black)),
 
-                   /** RaisedButton(
-                        onPressed: () async{
-
-                        },
-                        color: Colors.red,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Icon(Icons.power_settings_new,color: Colors.white,)
-                    ),**/
                   ],
                 ),
               ),
@@ -179,7 +181,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
                                          // Navigator.of(context).pushNamed(listes[index].redirect);
                                         print("____ position____"+index.toString());
                                         if(index == 0){
-                                          selectChoiceCommande();
+                                          selectChoiceCommande(commandeProvider,authProvider);
                                         }else if(index == 2){
                                           selectChoiceInventaire();
 
@@ -232,7 +234,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
     );
   }
 
-  void selectChoiceCommande(){
+  void selectChoiceCommande(CommandeProvider commandeProvider,AuthProvider authProvider){
     showDialog(context: context,builder:(BuildContext context){
       return AlertDialog(
         title: new Text("Select Choice"),
@@ -260,13 +262,17 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
                               child: Center(child: Icon(Icons.add_circle,color: Colors.white,))),
                           Container(
                               padding: EdgeInsets.all(20),
-                              child: Text("New Cmd",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+                              child: Text("Nouvelle",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
                         ],
                       ),
                     ),
                     InkWell(
                       onTap: (){
                         Navigator.of(context).pop();
+                       // findAllCommande(commandeProvider, authProvider);
+
+                       // CommandeArgs cmd = CommandeArgs(commandes: commandes,authProvider: authProvider);
+
                         Navigator.pushNamed(context, AllCommandeScreen.ROUTE);
 
                       },
@@ -279,7 +285,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
                               child: Center(child: Icon(Icons.check_circle,color: Colors.white,))),
                           Container(
                               padding: EdgeInsets.all(20),
-                              child: Text("Cmd Livrer",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+                              child: Text("Tout",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
                         ],
                       ),
                     )
@@ -328,7 +334,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
                               child: Center(child: Icon(Icons.add_circle,color: Colors.white,))),
                           Container(
                               padding: EdgeInsets.all(20),
-                              child: Text("New Inven",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+                              child: Text("Nouveau",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
                         ],
                       ),
                     ),
@@ -347,7 +353,7 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
                               child: Center(child: Icon(Icons.check_circle,color: Colors.white,))),
                           Container(
                               padding: EdgeInsets.all(20),
-                              child: Text("All Inve",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+                              child: Text("Tout",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
                         ],
                       ),
                     )
@@ -434,6 +440,22 @@ class _HomeDetailScreenState extends State<HomeDetailScreen>{
         ],
       );
     });
+  }
+
+  findAllCommande(CommandeProvider commandeProvider,AuthProvider authProvider) async {
+    setState(() {
+      inAsyncall = true;
+    });
+  List<Commande> cmds =  await commandeProvider.findCommandeByCreateur(authProvider.token);
+  print(cmds);
+
+    CommandeArgs cmd = CommandeArgs(commandes: cmds,authProvider: authProvider);
+    Navigator.pushNamed(context, AllCommandeScreen.ROUTE);
+  setState(() {
+    inAsyncall = false;
+    commandes = cmds;
+  });
+
   }
 
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myflutter/domain/dashboard_screen/profile/edite_profile_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/profile/new_plainte_screen.dart';
 import 'package:myflutter/domain/dashboard_screen/profile/profile_screen.dart';
+import 'package:myflutter/domain/dashboard_screen/profile/register_worker_screen.dart';
 
 import '../bottom_navigation.dart';
 
@@ -42,6 +43,13 @@ class ProfileRoute extends StatelessWidget{
               ),
               settings: settings
             );
+
+          case RegisterWorkerScreen.ROUTE:
+            return MaterialPageRoute(
+              builder: (_) => RegisterWorkerScreen(),
+              settings: settings
+            );
+            break;
 
           default:
             throw Exception("Invalid route");
